@@ -125,7 +125,8 @@
     
 	void yyerror(const char *s);
     void oc_touch(char *s);
-    void oc_kill(char *s);
+    void oc_kill(int s);
+    void oc_newline();
 
 
 /* Enabling traces.  */
@@ -148,7 +149,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 18 "carvalho.y"
+#line 19 "carvalho.y"
 {
 	int 	oc_int;
 	float 	oc_float;
@@ -156,7 +157,7 @@ typedef union YYSTYPE
 	char*	oc_string;
 }
 /* Line 193 of yacc.c.  */
-#line 160 "carvalho.tab.c"
+#line 161 "carvalho.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -169,7 +170,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 173 "carvalho.tab.c"
+#line 174 "carvalho.tab.c"
 
 #ifdef short
 # undef short
@@ -384,10 +385,10 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   44
+#define YYLAST   46
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  25
+#define YYNTOKENS  21
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  8
 /* YYNRULES -- Number of rules.  */
@@ -409,7 +410,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,    23,    22,     2,    21,     2,    24,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -448,12 +449,12 @@ static const yytype_uint8 yyprhs[] =
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      26,     0,    -1,    -1,    26,    27,    -1,    12,    -1,    32,
-      12,    -1,    28,    12,    -1,    29,    -1,    30,    -1,    28,
-      17,    28,    -1,    28,    18,    28,    -1,    28,    19,    28,
-      -1,    28,    20,    28,    -1,    31,    -1,    29,    17,    29,
-      -1,    29,    18,    29,    -1,    29,    19,    29,    -1,    29,
-      20,    29,    -1,    15,    -1,    16,    -1,     3,    -1,     4,
+      22,     0,    -1,    -1,    22,    23,    -1,    12,    -1,    28,
+      12,    -1,    24,    12,    -1,    25,    -1,    26,    -1,    24,
+      17,    24,    -1,    24,    18,    24,    -1,    24,    19,    24,
+      -1,    24,    20,    24,    -1,    27,    -1,    25,    17,    25,
+      -1,    25,    18,    25,    -1,    25,    19,    25,    -1,    25,
+      20,    25,    -1,    15,    -1,    16,    -1,     3,    -1,     4,
       -1,     5,    13,    -1,     6,    13,    -1,     7,    13,    -1,
        8,    13,    -1,     9,    -1,    10,    13,    -1,    14,    15,
       -1,    11,    -1
@@ -462,9 +463,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    59,    59,    60,    63,    64,    65,    68,    73,    74,
-      75,    76,    77,    80,    81,    82,    83,    84,    87,    90,
-      93,    94,    95,    96,    97,    98,    99,   100,   101,   102
+       0,    60,    60,    61,    64,    65,    66,    69,    74,    75,
+      76,    77,    78,    81,    82,    83,    84,    85,    88,    91,
+      94,    95,    96,    97,    98,    99,   100,   101,   102,   103
 };
 #endif
 
@@ -476,9 +477,8 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "OC_LS", "OC_PS", "OC_MKDIR", "OC_RMDIR",
   "OC_CD", "OC_TOUCH", "OC_IFCONFIG", "OC_START", "OC_QUIT", "OC_NEWLINE",
   "OC_STRING", "OC_KILL", "OC_INT", "OC_FLOAT", "OC_PLUS", "OC_MINUS",
-  "OC_TIMES", "OC_DIVIDED", "'-'", "'+'", "'*'", "'/'", "$accept",
-  "ShellFish", "newline", "expr_int", "expr_float", "term_int",
-  "term_float", "command", 0
+  "OC_TIMES", "OC_DIVIDED", "$accept", "ShellFish", "newline", "expr_int",
+  "expr_float", "term_int", "term_float", "command", 0
 };
 #endif
 
@@ -489,16 +489,16 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,    45,    43,    42,    47
+     275
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    25,    26,    26,    27,    27,    27,    27,    28,    28,
-      28,    28,    28,    29,    29,    29,    29,    29,    30,    31,
-      32,    32,    32,    32,    32,    32,    32,    32,    32,    32
+       0,    21,    22,    22,    23,    23,    23,    23,    24,    24,
+      24,    24,    24,    25,    25,    25,    25,    25,    26,    27,
+      28,    28,    28,    28,    28,    28,    28,    28,    28,    28
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -529,20 +529,20 @@ static const yytype_int8 yydefgoto[] =
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -13
+#define YYPACT_NINF -19
 static const yytype_int8 yypact[] =
 {
-     -13,     0,   -13,   -13,   -13,   -12,   -11,     4,    17,   -13,
-      22,   -13,   -13,    25,   -13,   -13,   -13,     1,     5,   -13,
-     -13,    29,   -13,   -13,   -13,   -13,   -13,   -13,   -13,    27,
-      27,    27,    27,    28,    28,    28,    28,   -13,     9,     9,
-       9,     9,     5,     5,     5,     5
+     -19,     0,   -19,   -19,   -19,     4,    17,    24,    25,   -19,
+      26,   -19,   -19,    27,   -19,   -19,   -19,     1,     5,   -19,
+     -19,    28,   -19,   -19,   -19,   -19,   -19,   -19,   -19,    29,
+      29,    29,    29,    30,    30,    30,    30,   -19,   -18,   -18,
+     -19,   -19,    16,    16,   -19,   -19
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -13,   -13,   -13,     2,     3,   -13,   -13,   -13
+     -19,   -19,   -19,    -3,    -2,   -19,   -19,   -19
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -552,31 +552,31 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-       2,    22,    23,     3,     4,     5,     6,     7,     8,     9,
-      10,    11,    12,    28,    13,    14,    15,    24,    29,    30,
-      31,    32,    33,    34,    35,    36,    29,    30,    31,    32,
-      25,    38,    39,    40,    41,    26,    42,    43,    44,    45,
-      27,    37,    14,     0,    15
+       2,    31,    32,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    12,    28,    13,    14,    15,    22,    29,    30,
+      31,    32,    33,    34,    35,    36,    38,    39,    40,    41,
+      23,    42,    43,    44,    45,    35,    36,    24,    25,    26,
+      37,     0,    27,     0,    14,     0,    15
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,    13,    13,     3,     4,     5,     6,     7,     8,     9,
+       0,    19,    20,     3,     4,     5,     6,     7,     8,     9,
       10,    11,    12,    12,    14,    15,    16,    13,    17,    18,
-      19,    20,    17,    18,    19,    20,    17,    18,    19,    20,
-      13,    29,    30,    31,    32,    13,    33,    34,    35,    36,
-      15,    12,    15,    -1,    16
+      19,    20,    17,    18,    19,    20,    29,    30,    31,    32,
+      13,    33,    34,    35,    36,    19,    20,    13,    13,    13,
+      12,    -1,    15,    -1,    15,    -1,    16
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    26,     0,     3,     4,     5,     6,     7,     8,     9,
-      10,    11,    12,    14,    15,    16,    27,    28,    29,    30,
-      31,    32,    13,    13,    13,    13,    13,    15,    12,    17,
-      18,    19,    20,    17,    18,    19,    20,    12,    28,    28,
-      28,    28,    29,    29,    29,    29
+       0,    22,     0,     3,     4,     5,     6,     7,     8,     9,
+      10,    11,    12,    14,    15,    16,    23,    24,    25,    26,
+      27,    28,    13,    13,    13,    13,    13,    15,    12,    17,
+      18,    19,    20,    17,    18,    19,    20,    12,    24,    24,
+      24,    24,    25,    25,    25,    25
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1390,138 +1390,143 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 5:
-#line 64 "carvalho.y"
+        case 3:
+#line 61 "carvalho.y"
+    { oc_newline(); ;}
+    break;
+
+  case 5:
+#line 65 "carvalho.y"
     { printf(""); ;}
     break;
 
   case 6:
-#line 65 "carvalho.y"
+#line 66 "carvalho.y"
     {
 									printf("%d\n", (yyvsp[(1) - (2)].oc_int));
 								;}
     break;
 
   case 7:
-#line 68 "carvalho.y"
+#line 69 "carvalho.y"
     {
 									printf("%f\n", (yyvsp[(1) - (1)].oc_float));
 								;}
     break;
 
   case 8:
-#line 73 "carvalho.y"
+#line 74 "carvalho.y"
     { (yyval.oc_int) = (yyvsp[(1) - (1)].oc_int); ;}
     break;
 
   case 9:
-#line 74 "carvalho.y"
+#line 75 "carvalho.y"
     { (yyval.oc_int) = (yyvsp[(1) - (3)].oc_int) + (yyvsp[(3) - (3)].oc_int); ;}
     break;
 
   case 10:
-#line 75 "carvalho.y"
+#line 76 "carvalho.y"
     { (yyval.oc_int) = (yyvsp[(1) - (3)].oc_int) - (yyvsp[(3) - (3)].oc_int); ;}
     break;
 
   case 11:
-#line 76 "carvalho.y"
+#line 77 "carvalho.y"
     { (yyval.oc_int) = (yyvsp[(1) - (3)].oc_int) * (yyvsp[(3) - (3)].oc_int); ;}
     break;
 
   case 12:
-#line 77 "carvalho.y"
+#line 78 "carvalho.y"
     { (yyval.oc_int) = (yyvsp[(1) - (3)].oc_int) / (yyvsp[(3) - (3)].oc_int); ;}
     break;
 
   case 13:
-#line 80 "carvalho.y"
+#line 81 "carvalho.y"
     { (yyval.oc_float) = (yyvsp[(1) - (1)].oc_float); ;}
     break;
 
   case 14:
-#line 81 "carvalho.y"
+#line 82 "carvalho.y"
     { (yyval.oc_float) = (yyvsp[(1) - (3)].oc_float) + (yyvsp[(3) - (3)].oc_float); ;}
     break;
 
   case 15:
-#line 82 "carvalho.y"
+#line 83 "carvalho.y"
     { (yyval.oc_float) = (yyvsp[(1) - (3)].oc_float) - (yyvsp[(3) - (3)].oc_float); ;}
     break;
 
   case 16:
-#line 83 "carvalho.y"
+#line 84 "carvalho.y"
     { (yyval.oc_float) = (yyvsp[(1) - (3)].oc_float) * (yyvsp[(3) - (3)].oc_float); ;}
     break;
 
   case 17:
-#line 84 "carvalho.y"
+#line 85 "carvalho.y"
     { (yyval.oc_float) = (yyvsp[(1) - (3)].oc_float) / (yyvsp[(3) - (3)].oc_float); ;}
     break;
 
   case 18:
-#line 87 "carvalho.y"
+#line 88 "carvalho.y"
     { (yyval.oc_int) = (yyvsp[(1) - (1)].oc_int); ;}
     break;
 
   case 19:
-#line 90 "carvalho.y"
+#line 91 "carvalho.y"
     { (yyval.oc_float) = (yyvsp[(1) - (1)].oc_float); ;}
     break;
 
   case 20:
-#line 93 "carvalho.y"
+#line 94 "carvalho.y"
     { system("ls"); ;}
     break;
 
   case 21:
-#line 94 "carvalho.y"
+#line 95 "carvalho.y"
     { system("ps"); ;}
     break;
 
   case 22:
-#line 95 "carvalho.y"
+#line 96 "carvalho.y"
     { mkdir((yyvsp[(2) - (2)].oc_string), 0700); ;}
     break;
 
   case 23:
-#line 96 "carvalho.y"
+#line 97 "carvalho.y"
     { rmdir((yyvsp[(2) - (2)].oc_string)); ;}
     break;
 
   case 24:
-#line 97 "carvalho.y"
+#line 98 "carvalho.y"
     { chdir((yyvsp[(2) - (2)].oc_string)); ;}
     break;
 
   case 25:
-#line 98 "carvalho.y"
+#line 99 "carvalho.y"
     { oc_touch((yyvsp[(2) - (2)].oc_string)); ;}
     break;
 
   case 26:
-#line 99 "carvalho.y"
+#line 100 "carvalho.y"
     { system("ifconfig"); ;}
     break;
 
   case 27:
-#line 100 "carvalho.y"
+#line 101 "carvalho.y"
     { popen((yyvsp[(2) - (2)].oc_string), "r"); ;}
     break;
 
   case 28:
-#line 101 "carvalho.y"
+#line 102 "carvalho.y"
     { oc_kill((yyvsp[(2) - (2)].oc_int)); ;}
     break;
 
   case 29:
-#line 102 "carvalho.y"
+#line 103 "carvalho.y"
     { exit(0); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1525 "carvalho.tab.c"
+#line 1530 "carvalho.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1735,12 +1740,12 @@ yyreturn:
 }
 
 
-#line 105 "carvalho.y"
+#line 106 "carvalho.y"
 
 
 int main() {
     yyin = stdin;
-    
+    oc_newline();
     do {
         yyparse();
     } while (!feof(yyin));
@@ -1758,13 +1763,17 @@ void oc_touch(char *s) {
     system(command);
 }
 
-void oc_kill(char *s) {
+void oc_kill(int s) {
     char command[256];
-    snprintf(command, sizeof command, "kill %s", s);
+    snprintf(command, sizeof command, "kill %d", s);
     system(command);
 }
 
-
+void oc_newline() {
+    char path[256];
+    getcwd(path, sizeof(path));
+    printf("🔺 ShellFish%s>> ", path);
+}
 
 
 

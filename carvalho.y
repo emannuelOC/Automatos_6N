@@ -12,7 +12,8 @@
     
 	void yyerror(const char *s);
     void oc_touch(char *s);
-    void oc_kill(char *s);
+    void oc_kill(int s);
+    void oc_newline();
 %}
 
 %union {
@@ -43,8 +44,8 @@
 %token OC_TIMES
 %token OC_DIVIDED
 
-%left '-' '+'
-%left '*' '/'
+%left OC_PLUS OC_MINUS
+%left OC_TIMES OC_DIVIDED
 
 %type<oc_int>		expr_int
 %type<oc_float>		expr_float
@@ -57,7 +58,7 @@
 %%
 
 ShellFish:
-	| ShellFish newline
+| ShellFish newline { oc_newline(); }
 ;
 
 newline: OC_NEWLINE
@@ -106,7 +107,7 @@ command: OC_LS                  { system("ls"); }
 
 int main() {
     yyin = stdin;
-    
+    oc_newline();
     do {
         yyparse();
     } while (!feof(yyin));
@@ -124,13 +125,17 @@ void oc_touch(char *s) {
     system(command);
 }
 
-void oc_kill(char *s) {
+void oc_kill(int s) {
     char command[256];
-    snprintf(command, sizeof command, "kill %s", s);
+    snprintf(command, sizeof command, "kill %d", s);
     system(command);
 }
 
-
+void oc_newline() {
+    char path[256];
+    getcwd(path, sizeof(path));
+    printf("🔺 ShellFish%s>> ", path);
+}
 
 
 
